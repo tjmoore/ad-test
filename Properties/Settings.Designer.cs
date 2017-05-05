@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ad_test.Properties
+namespace AdTest.Properties
 {
 
 
