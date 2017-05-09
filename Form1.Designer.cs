@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.textBoxUsername = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.textBoxPassword = new System.Windows.Forms.TextBox();
@@ -38,7 +39,11 @@
             this.label3 = new System.Windows.Forms.Label();
             this.textBoxAdDomain = new System.Windows.Forms.TextBox();
             this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
+            this.pictureBoxStatus = new System.Windows.Forms.PictureBox();
+            this.imageList = new System.Windows.Forms.ImageList(this.components);
+            this.labelStatus = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxStatus)).BeginInit();
             this.SuspendLayout();
             // 
             // textBoxUsername
@@ -48,6 +53,7 @@
             this.textBoxUsername.Size = new System.Drawing.Size(365, 20);
             this.textBoxUsername.TabIndex = 0;
             this.textBoxUsername.TextChanged += new System.EventHandler(this.textBoxUsername_TextChanged);
+            this.textBoxUsername.Validating += new System.ComponentModel.CancelEventHandler(this.textBoxUsername_Validating);
             // 
             // label1
             // 
@@ -79,9 +85,9 @@
             // buttonAuthenticate
             // 
             this.buttonAuthenticate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonAuthenticate.Location = new System.Drawing.Point(458, 9);
+            this.buttonAuthenticate.Location = new System.Drawing.Point(493, 9);
             this.buttonAuthenticate.Name = "buttonAuthenticate";
-            this.buttonAuthenticate.Size = new System.Drawing.Size(80, 23);
+            this.buttonAuthenticate.Size = new System.Drawing.Size(93, 23);
             this.buttonAuthenticate.TabIndex = 4;
             this.buttonAuthenticate.Text = "&Authenticate";
             this.buttonAuthenticate.UseVisualStyleBackColor = true;
@@ -92,11 +98,13 @@
             this.textBoxOutput.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxOutput.Location = new System.Drawing.Point(13, 98);
+            this.textBoxOutput.BackColor = System.Drawing.SystemColors.Window;
+            this.textBoxOutput.Location = new System.Drawing.Point(13, 117);
             this.textBoxOutput.Multiline = true;
             this.textBoxOutput.Name = "textBoxOutput";
+            this.textBoxOutput.ReadOnly = true;
             this.textBoxOutput.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBoxOutput.Size = new System.Drawing.Size(524, 200);
+            this.textBoxOutput.Size = new System.Drawing.Size(572, 243);
             this.textBoxOutput.TabIndex = 5;
             // 
             // label3
@@ -119,12 +127,40 @@
             // 
             this.errorProvider.ContainerControl = this;
             // 
+            // pictureBoxStatus
+            // 
+            this.pictureBoxStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pictureBoxStatus.Location = new System.Drawing.Point(569, 95);
+            this.pictureBoxStatus.Name = "pictureBoxStatus";
+            this.pictureBoxStatus.Size = new System.Drawing.Size(16, 16);
+            this.pictureBoxStatus.TabIndex = 7;
+            this.pictureBoxStatus.TabStop = false;
+            // 
+            // imageList
+            // 
+            this.imageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList.ImageStream")));
+            this.imageList.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList.Images.SetKeyName(0, "test_unknown.ico");
+            this.imageList.Images.SetKeyName(1, "test_success.ico");
+            this.imageList.Images.SetKeyName(2, "test_error.ico");
+            // 
+            // labelStatus
+            // 
+            this.labelStatus.AutoSize = true;
+            this.labelStatus.Location = new System.Drawing.Point(12, 98);
+            this.labelStatus.Name = "labelStatus";
+            this.labelStatus.Size = new System.Drawing.Size(41, 13);
+            this.labelStatus.TabIndex = 8;
+            this.labelStatus.Text = "[status]";
+            // 
             // Form1
             // 
             this.AcceptButton = this.buttonAuthenticate;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(549, 310);
+            this.ClientSize = new System.Drawing.Size(597, 372);
+            this.Controls.Add(this.labelStatus);
+            this.Controls.Add(this.pictureBoxStatus);
             this.Controls.Add(this.textBoxAdDomain);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.textBoxOutput);
@@ -137,6 +173,7 @@
             this.Name = "Form1";
             this.Text = "Active Directory Test";
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxStatus)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -153,6 +190,9 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox textBoxAdDomain;
         private System.Windows.Forms.ErrorProvider errorProvider;
+        private System.Windows.Forms.PictureBox pictureBoxStatus;
+        private System.Windows.Forms.ImageList imageList;
+        private System.Windows.Forms.Label labelStatus;
     }
 }
 
