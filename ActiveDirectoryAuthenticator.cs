@@ -81,15 +81,16 @@ namespace AdTest
         /// <param name="username">username or user principle name (domain\username or email format)</param>
         /// <param name="password">password</param>
         /// <param name="domain">optional domain</param>
+        /// <param name="container">optional container string</param>
         /// <returns>Authenticated user details or null if not authenticated</returns>
         /// <exception cref="UnableToAuthenticateException">Thrown if there is an error authenticating</exception>
-        public Task<AuthenticatedUser> Authenticate(string username, string password, string domain = null)
+        public Task<AuthenticatedUser> Authenticate(string username, string password, string domain = null, string container = null)
         {
             return Task.Run(() =>
             {
                 try
                 {
-                    using (PrincipalContext context = new PrincipalContext(ContextType.Domain, domain))
+                    using (PrincipalContext context = new PrincipalContext(ContextType.Domain, domain, container))
                     {
                         // validate the credentials
                         bool isValid = context.ValidateCredentials(username, password);

@@ -22,10 +22,16 @@ namespace AdTest
             string username = textBoxUsername.Text.Trim();
             string password = textBoxPassword.Text.Trim();
             string domain = textBoxAdDomain.Text.Trim();
+            string container = textBoxAdContainer.Text.Trim();
 
             if (domain.Length == 0)
             {
                 domain = null;
+            }
+
+            if (container.Length == 0)
+            {
+                container = null;
             }
 
             buttonAuthenticate.Enabled = false;
@@ -35,7 +41,7 @@ namespace AdTest
             {
                 // validate the credentials
                 var auth = new ActiveDirectoryAuthenticator();
-                AuthenticatedUser authenticatedUser = await auth.Authenticate(username, password, domain);
+                AuthenticatedUser authenticatedUser = await auth.Authenticate(username, password, domain, container);
 
                 bool valid = authenticatedUser != null;
                 string validText = valid ? "User credentials are valid" : "User credentials are not valid";
@@ -66,27 +72,6 @@ namespace AdTest
 
             labelStatus.Text = "";
             buttonAuthenticate.Enabled = true;
-        }
-
-        private UserPrincipal FindUser(PrincipalContext context, string username)
-        {
-            // Find by UPN
-            var up = new UserPrincipal(context) { UserPrincipalName = username };
-
-            var search = new PrincipalSearcher(up);
-            var foundUser = search.FindOne() as UserPrincipal;
-            if (foundUser != null)
-                return foundUser;
-
-            // Find by SAM
-            up = new UserPrincipal(context) { SamAccountName = username };
-
-            search = new PrincipalSearcher(up);
-            foundUser = search.FindOne() as UserPrincipal;
-            if (foundUser != null)
-                return foundUser;
-
-            return null;
         }
 
         private void EnableButtons()

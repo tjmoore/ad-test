@@ -42,13 +42,17 @@
             this.pictureBoxStatus = new System.Windows.Forms.PictureBox();
             this.imageList = new System.Windows.Forms.ImageList(this.components);
             this.labelStatus = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.textBoxAdContainer = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxStatus)).BeginInit();
             this.SuspendLayout();
             // 
             // textBoxUsername
             // 
-            this.textBoxUsername.Location = new System.Drawing.Point(78, 12);
+            this.textBoxUsername.Location = new System.Drawing.Point(91, 13);
             this.textBoxUsername.Name = "textBoxUsername";
             this.textBoxUsername.Size = new System.Drawing.Size(365, 20);
             this.textBoxUsername.TabIndex = 0;
@@ -58,7 +62,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(14, 15);
+            this.label1.Location = new System.Drawing.Point(27, 16);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(58, 13);
             this.label1.TabIndex = 1;
@@ -66,7 +70,7 @@
             // 
             // textBoxPassword
             // 
-            this.textBoxPassword.Location = new System.Drawing.Point(78, 39);
+            this.textBoxPassword.Location = new System.Drawing.Point(91, 41);
             this.textBoxPassword.Name = "textBoxPassword";
             this.textBoxPassword.Size = new System.Drawing.Size(365, 20);
             this.textBoxPassword.TabIndex = 2;
@@ -76,7 +80,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(16, 42);
+            this.label2.Location = new System.Drawing.Point(29, 44);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(56, 13);
             this.label2.TabIndex = 3;
@@ -85,7 +89,7 @@
             // buttonAuthenticate
             // 
             this.buttonAuthenticate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonAuthenticate.Location = new System.Drawing.Point(493, 9);
+            this.buttonAuthenticate.Location = new System.Drawing.Point(545, 9);
             this.buttonAuthenticate.Name = "buttonAuthenticate";
             this.buttonAuthenticate.Size = new System.Drawing.Size(93, 23);
             this.buttonAuthenticate.TabIndex = 4;
@@ -99,18 +103,18 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxOutput.BackColor = System.Drawing.SystemColors.Window;
-            this.textBoxOutput.Location = new System.Drawing.Point(13, 117);
+            this.textBoxOutput.Location = new System.Drawing.Point(13, 149);
             this.textBoxOutput.Multiline = true;
             this.textBoxOutput.Name = "textBoxOutput";
             this.textBoxOutput.ReadOnly = true;
             this.textBoxOutput.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBoxOutput.Size = new System.Drawing.Size(572, 243);
+            this.textBoxOutput.Size = new System.Drawing.Size(624, 249);
             this.textBoxOutput.TabIndex = 5;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(8, 68);
+            this.label3.Location = new System.Drawing.Point(21, 72);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(64, 13);
             this.label3.TabIndex = 6;
@@ -118,7 +122,7 @@
             // 
             // textBoxAdDomain
             // 
-            this.textBoxAdDomain.Location = new System.Drawing.Point(79, 66);
+            this.textBoxAdDomain.Location = new System.Drawing.Point(91, 69);
             this.textBoxAdDomain.Name = "textBoxAdDomain";
             this.textBoxAdDomain.Size = new System.Drawing.Size(364, 20);
             this.textBoxAdDomain.TabIndex = 3;
@@ -130,7 +134,7 @@
             // pictureBoxStatus
             // 
             this.pictureBoxStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBoxStatus.Location = new System.Drawing.Point(569, 95);
+            this.pictureBoxStatus.Location = new System.Drawing.Point(621, 127);
             this.pictureBoxStatus.Name = "pictureBoxStatus";
             this.pictureBoxStatus.Size = new System.Drawing.Size(16, 16);
             this.pictureBoxStatus.TabIndex = 7;
@@ -147,18 +151,56 @@
             // labelStatus
             // 
             this.labelStatus.AutoSize = true;
-            this.labelStatus.Location = new System.Drawing.Point(12, 98);
+            this.labelStatus.Location = new System.Drawing.Point(12, 130);
             this.labelStatus.Name = "labelStatus";
             this.labelStatus.Size = new System.Drawing.Size(41, 13);
             this.labelStatus.TabIndex = 8;
             this.labelStatus.Text = "[status]";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(12, 100);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(73, 13);
+            this.label4.TabIndex = 9;
+            this.label4.Text = "AD Container:";
+            // 
+            // textBoxAdContainer
+            // 
+            this.textBoxAdContainer.Location = new System.Drawing.Point(91, 97);
+            this.textBoxAdContainer.Name = "textBoxAdContainer";
+            this.textBoxAdContainer.Size = new System.Drawing.Size(364, 20);
+            this.textBoxAdContainer.TabIndex = 10;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(462, 72);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(50, 13);
+            this.label5.TabIndex = 11;
+            this.label5.Text = "(optional)";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(462, 100);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(50, 13);
+            this.label6.TabIndex = 12;
+            this.label6.Text = "(optional)";
             // 
             // Form1
             // 
             this.AcceptButton = this.buttonAuthenticate;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(597, 372);
+            this.ClientSize = new System.Drawing.Size(649, 410);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.textBoxAdContainer);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.labelStatus);
             this.Controls.Add(this.pictureBoxStatus);
             this.Controls.Add(this.textBoxAdDomain);
@@ -193,6 +235,10 @@
         private System.Windows.Forms.PictureBox pictureBoxStatus;
         private System.Windows.Forms.ImageList imageList;
         private System.Windows.Forms.Label labelStatus;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox textBoxAdContainer;
+        private System.Windows.Forms.Label label4;
     }
 }
 
