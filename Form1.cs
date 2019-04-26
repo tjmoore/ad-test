@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.DirectoryServices.AccountManagement;
+using System.Linq;
 using System.Net.Mail;
 using System.Windows.Forms;
 
@@ -16,7 +18,7 @@ namespace AdTest
         }
 
 
-        private async void buttonAuthenticate_Click(object sender, EventArgs e)
+        private async void ButtonAuthenticate_Click(object sender, EventArgs e)
         {
             textBoxOutput.Clear();
             string username = textBoxUsername.Text.Trim();
@@ -41,7 +43,7 @@ namespace AdTest
             {
                 // validate the credentials
                 var auth = new ActiveDirectoryAuthenticator();
-                AuthenticatedUser authenticatedUser = await auth.Authenticate(username, password, domain, container);
+                UserDetail authenticatedUser = await auth.Authenticate(username, password, domain, container);
 
                 bool valid = authenticatedUser != null;
                 string validText = valid ? "User credentials are valid" : "User credentials are not valid";
@@ -62,6 +64,15 @@ namespace AdTest
                     textBoxOutput.AppendText($"EmailAddress: {authenticatedUser.Email}{Environment.NewLine}");
                     textBoxOutput.AppendText($"AccountName: {authenticatedUser.AccountName}{Environment.NewLine}");
                     textBoxOutput.AppendText($"BadLogonCount: {authenticatedUser.BadLogonCount}{Environment.NewLine}");
+                    textBoxOutput.AppendText($"Properties...{Environment.NewLine}{Environment.NewLine}");
+
+                    if (authenticatedUser.Properties != null)
+                    {
+                        foreach(KeyValuePair<string, string> kv in authenticatedUser.Properties)
+                        {
+                            textBoxOutput.AppendText($"{kv.Key}: {kv.Value}{Environment.NewLine}");
+                        }
+                    }
                 }                
             }
             catch (UnableToAuthenticateException ex)
@@ -79,7 +90,7 @@ namespace AdTest
             buttonAuthenticate.Enabled = (textBoxUsername.Text.Length > 0 && textBoxPassword.Text.Length > 0);
         }
 
-        private void textBoxUsername_TextChanged(object sender, EventArgs e)
+        private void TextBoxUsername_TextChanged(object sender, EventArgs e)
         {
             if (textBoxUsername.Text.Length == 0)
             {
@@ -92,7 +103,7 @@ namespace AdTest
             EnableButtons();
         }
 
-        private void textBoxPassword_TextChanged(object sender, EventArgs e)
+        private void TextBoxPassword_TextChanged(object sender, EventArgs e)
         {
             if (textBoxPassword.Text.Length == 0)
             {
@@ -125,7 +136,7 @@ namespace AdTest
             }
         }
 
-        private void textBoxUsername_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        private void TextBoxUsername_Validating(object sender, System.ComponentModel.CancelEventArgs e)
         {
             string username = textBoxUsername.Text.Trim();
 
@@ -156,6 +167,33 @@ namespace AdTest
             {
                 errorProvider.SetError(textBoxUsername, "");
             }
+        }
+
+        private async void ButtonGetUsers_Click(object sender, EventArgs e)
+        {
+            string domain = textBoxAdDomain.Text.Trim();
+            string container = textBoxAdContainer.Text.Trim();
+
+            if (domain.Length == 0)
+            {
+                domain = null;
+            }
+
+            if (container.Length == 0)
+            {
+                container = null;
+            }
+
+            buttonGetUsers.Enabled = false;
+            listBoxUsers.Items.Clear();
+
+            var auth = new ActiveDirectoryAuthenticator();
+            IEnumerable<User> users = await auth.GetUsers(domain, container);
+
+            listBoxUsers.DisplayMember = "FullName";
+            listBoxUsers.Items.AddRange(users.ToArray());
+
+            buttonGetUsers.Enabled = true;
         }
     }
 }

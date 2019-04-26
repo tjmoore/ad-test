@@ -1,11 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.DirectoryServices;
 using System.DirectoryServices.AccountManagement;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using System.Linq;
+using System.Collections;
 
 namespace AdTest
 {
-    public class AuthenticatedUser
+    public class UserDetail
     {
         /// <summary>
         /// ID of user if available in end system, or otherwise the username as ID
@@ -66,6 +70,35 @@ namespace AdTest
         /// Count of bad logon attempts if available
         /// </summary>
         public int BadLogonCount { get; set; }
+
+
+        /// <summary>
+        /// Full property list, as string keys and values
+        /// </summary>
+        public IDictionary<string, string> Properties { get; set; }
+    }
+
+    public class User
+    {
+        /// <summary>
+        /// ID of user if available in end system, or otherwise the username as ID
+        /// </summary>
+        public string Id { get; set; }
+
+        /// <summary>
+        /// Username. Typically User Principal Name or similar
+        /// </summary>
+        public string Username { get; set; }
+
+        /// <summary>
+        /// Email, which may be different from username
+        /// </summary>
+        public string Email { get; set; }
+
+        /// <summary>
+        /// Full name of user
+        /// </summary>
+        public string FullName { get; set; }
     }
 
     /// <summary>
@@ -84,7 +117,7 @@ namespace AdTest
         /// <param name="container">optional container string</param>
         /// <returns>Authenticated user details or null if not authenticated</returns>
         /// <exception cref="UnableToAuthenticateException">Thrown if there is an error authenticating</exception>
-        public Task<AuthenticatedUser> Authenticate(string username, string password, string domain = null, string container = null)
+        public Task<UserDetail> Authenticate(string username, string password, string domain = null, string container = null)
         {
             return Task.Run(() =>
             {
@@ -108,7 +141,7 @@ namespace AdTest
                                 throw new UnableToAuthenticateException("User has no User Principal Name");
                             }
 
-                            var authenticatedUser = new AuthenticatedUser
+                            var authenticatedUser = new UserDetail
                             {
                                 // Use Guid for Id if available, otherwise email address
                                 Id = foundUser.Guid.HasValue ? foundUser.Guid.ToString() : userPrincipalName.ToLower(),
@@ -124,6 +157,19 @@ namespace AdTest
                                 DistinguishedName = foundUser.DistinguishedName,
                                 BadLogonCount = foundUser.BadLogonCount
                             };
+
+                            // Populate underlying properties
+                            if (foundUser.GetUnderlyingObject() is DirectoryEntry de && de.Properties.Count > 0)
+                            {
+                                authenticatedUser.Properties = new Dictionary<string, string>();
+                                IDictionaryEnumerator ide = de.Properties.GetEnumerator();
+                                ide.Reset();
+                                while (ide.MoveNext())
+                                {
+                                    PropertyValueCollection property = ide.Entry.Value as PropertyValueCollection;
+                                    authenticatedUser.Properties.Add(property.PropertyName.ToString(), property.Value.ToString());
+                                }
+                            }
 
                             return authenticatedUser;
                         }
@@ -157,14 +203,45 @@ namespace AdTest
             });
         }
 
+        public Task<List<User>> GetUsers(string domain = null, string container = null)
+        {
+            return Task.Run(() =>
+            {
+                try
+                {
+                    using (PrincipalContext context = new PrincipalContext(ContextType.Domain, domain, container))
+                    {
+                        var upList = GetUsers(context);
+
+                        IEnumerable<User> users = from u in upList
+                                                  let userPrincipalName = u.UserPrincipalName?.Trim().ToLower()
+                                                  orderby u.DisplayName
+                                                  select new User
+                                                  {
+                                                      Id = u.Guid.HasValue ? u.Guid.ToString() : userPrincipalName.ToLower(),
+                                                      Username = userPrincipalName,
+                                                      FullName = u.DisplayName,
+                                                      Email = string.IsNullOrEmpty(u.EmailAddress) == false ? u.EmailAddress : userPrincipalName
+                                                  };
+
+                        return users.ToList();
+                    }
+                }
+                catch (Exception)
+                {
+                }
+
+                return null;
+            });
+        }
+
         private static UserPrincipal FindUser(PrincipalContext context, string username)
         {
             // Find by UPN
             var up = new UserPrincipal(context) { UserPrincipalName = username };
 
             var search = new PrincipalSearcher(up);
-            var foundUser = search.FindOne() as UserPrincipal;
-            if (foundUser != null)
+            if (search.FindOne() is UserPrincipal foundUser)
                 return foundUser;
 
             // Find by SAM
@@ -174,6 +251,22 @@ namespace AdTest
             foundUser = search.FindOne() as UserPrincipal;
             if (foundUser != null)
                 return foundUser;
+
+            return null;
+        }
+
+        private static IEnumerable<UserPrincipal> GetUsers(PrincipalContext context)
+        {
+            var up = new UserPrincipal(context);
+            var search = new PrincipalSearcher(up);
+            var users = from p in search.FindAll()
+                        let u = p as UserPrincipal
+                        where u != null && u.UserPrincipalName != null
+                        select u;
+
+            if (users != null && users.Any())
+                return users;
+
 
             return null;
         }

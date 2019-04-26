@@ -46,6 +46,8 @@
             this.textBoxAdContainer = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
+            this.listBoxUsers = new System.Windows.Forms.ListBox();
+            this.buttonGetUsers = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxStatus)).BeginInit();
             this.SuspendLayout();
@@ -56,8 +58,8 @@
             this.textBoxUsername.Name = "textBoxUsername";
             this.textBoxUsername.Size = new System.Drawing.Size(365, 20);
             this.textBoxUsername.TabIndex = 0;
-            this.textBoxUsername.TextChanged += new System.EventHandler(this.textBoxUsername_TextChanged);
-            this.textBoxUsername.Validating += new System.ComponentModel.CancelEventHandler(this.textBoxUsername_Validating);
+            this.textBoxUsername.TextChanged += new System.EventHandler(this.TextBoxUsername_TextChanged);
+            this.textBoxUsername.Validating += new System.ComponentModel.CancelEventHandler(this.TextBoxUsername_Validating);
             // 
             // label1
             // 
@@ -75,7 +77,7 @@
             this.textBoxPassword.Size = new System.Drawing.Size(365, 20);
             this.textBoxPassword.TabIndex = 2;
             this.textBoxPassword.UseSystemPasswordChar = true;
-            this.textBoxPassword.TextChanged += new System.EventHandler(this.textBoxPassword_TextChanged);
+            this.textBoxPassword.TextChanged += new System.EventHandler(this.TextBoxPassword_TextChanged);
             // 
             // label2
             // 
@@ -89,26 +91,25 @@
             // buttonAuthenticate
             // 
             this.buttonAuthenticate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonAuthenticate.Location = new System.Drawing.Point(545, 9);
+            this.buttonAuthenticate.Location = new System.Drawing.Point(875, 9);
             this.buttonAuthenticate.Name = "buttonAuthenticate";
             this.buttonAuthenticate.Size = new System.Drawing.Size(93, 23);
             this.buttonAuthenticate.TabIndex = 4;
             this.buttonAuthenticate.Text = "&Authenticate";
             this.buttonAuthenticate.UseVisualStyleBackColor = true;
-            this.buttonAuthenticate.Click += new System.EventHandler(this.buttonAuthenticate_Click);
+            this.buttonAuthenticate.Click += new System.EventHandler(this.ButtonAuthenticate_Click);
             // 
             // textBoxOutput
             // 
-            this.textBoxOutput.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxOutput.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.textBoxOutput.BackColor = System.Drawing.SystemColors.Window;
             this.textBoxOutput.Location = new System.Drawing.Point(13, 149);
             this.textBoxOutput.Multiline = true;
             this.textBoxOutput.Name = "textBoxOutput";
             this.textBoxOutput.ReadOnly = true;
             this.textBoxOutput.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBoxOutput.Size = new System.Drawing.Size(624, 249);
+            this.textBoxOutput.Size = new System.Drawing.Size(443, 349);
             this.textBoxOutput.TabIndex = 5;
             // 
             // label3
@@ -133,8 +134,7 @@
             // 
             // pictureBoxStatus
             // 
-            this.pictureBoxStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBoxStatus.Location = new System.Drawing.Point(621, 127);
+            this.pictureBoxStatus.Location = new System.Drawing.Point(440, 127);
             this.pictureBoxStatus.Name = "pictureBoxStatus";
             this.pictureBoxStatus.Size = new System.Drawing.Size(16, 16);
             this.pictureBoxStatus.TabIndex = 7;
@@ -191,12 +191,35 @@
             this.label6.TabIndex = 12;
             this.label6.Text = "(optional)";
             // 
+            // listBoxUsers
+            // 
+            this.listBoxUsers.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.listBoxUsers.FormattingEnabled = true;
+            this.listBoxUsers.Location = new System.Drawing.Point(468, 149);
+            this.listBoxUsers.Name = "listBoxUsers";
+            this.listBoxUsers.Size = new System.Drawing.Size(500, 342);
+            this.listBoxUsers.TabIndex = 13;
+            // 
+            // buttonGetUsers
+            // 
+            this.buttonGetUsers.Location = new System.Drawing.Point(875, 37);
+            this.buttonGetUsers.Name = "buttonGetUsers";
+            this.buttonGetUsers.Size = new System.Drawing.Size(92, 23);
+            this.buttonGetUsers.TabIndex = 14;
+            this.buttonGetUsers.Text = "Get &Users";
+            this.buttonGetUsers.UseVisualStyleBackColor = true;
+            this.buttonGetUsers.Click += new System.EventHandler(this.ButtonGetUsers_Click);
+            // 
             // Form1
             // 
             this.AcceptButton = this.buttonAuthenticate;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(649, 410);
+            this.ClientSize = new System.Drawing.Size(979, 510);
+            this.Controls.Add(this.buttonGetUsers);
+            this.Controls.Add(this.listBoxUsers);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.textBoxAdContainer);
@@ -239,6 +262,8 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox textBoxAdContainer;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button buttonGetUsers;
+        private System.Windows.Forms.ListBox listBoxUsers;
     }
 }
 
