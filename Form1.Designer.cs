@@ -48,6 +48,10 @@
             this.label6 = new System.Windows.Forms.Label();
             this.listBoxUsers = new System.Windows.Forms.ListBox();
             this.buttonGetUsers = new System.Windows.Forms.Button();
+            this.cbWithProperties = new System.Windows.Forms.CheckBox();
+            this.cbSsl = new System.Windows.Forms.CheckBox();
+            this.cbNegotiate = new System.Windows.Forms.CheckBox();
+            this.cbSimpleBind = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxStatus)).BeginInit();
             this.SuspendLayout();
@@ -91,7 +95,7 @@
             // buttonAuthenticate
             // 
             this.buttonAuthenticate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonAuthenticate.Location = new System.Drawing.Point(875, 9);
+            this.buttonAuthenticate.Location = new System.Drawing.Point(545, 16);
             this.buttonAuthenticate.Name = "buttonAuthenticate";
             this.buttonAuthenticate.Size = new System.Drawing.Size(93, 23);
             this.buttonAuthenticate.TabIndex = 4;
@@ -204,7 +208,7 @@
             // 
             // buttonGetUsers
             // 
-            this.buttonGetUsers.Location = new System.Drawing.Point(875, 37);
+            this.buttonGetUsers.Location = new System.Drawing.Point(875, 120);
             this.buttonGetUsers.Name = "buttonGetUsers";
             this.buttonGetUsers.Size = new System.Drawing.Size(92, 23);
             this.buttonGetUsers.TabIndex = 14;
@@ -212,12 +216,56 @@
             this.buttonGetUsers.UseVisualStyleBackColor = true;
             this.buttonGetUsers.Click += new System.EventHandler(this.ButtonGetUsers_Click);
             // 
+            // cbWithProperties
+            // 
+            this.cbWithProperties.AutoSize = true;
+            this.cbWithProperties.Location = new System.Drawing.Point(644, 20);
+            this.cbWithProperties.Name = "cbWithProperties";
+            this.cbWithProperties.Size = new System.Drawing.Size(97, 17);
+            this.cbWithProperties.TabIndex = 15;
+            this.cbWithProperties.Text = "With properties";
+            this.cbWithProperties.UseVisualStyleBackColor = true;
+            // 
+            // cbSsl
+            // 
+            this.cbSsl.AutoSize = true;
+            this.cbSsl.Location = new System.Drawing.Point(644, 45);
+            this.cbSsl.Name = "cbSsl";
+            this.cbSsl.Size = new System.Drawing.Size(46, 17);
+            this.cbSsl.TabIndex = 16;
+            this.cbSsl.Text = "SSL";
+            this.cbSsl.UseVisualStyleBackColor = true;
+            // 
+            // cbNegotiate
+            // 
+            this.cbNegotiate.AutoSize = true;
+            this.cbNegotiate.Location = new System.Drawing.Point(696, 45);
+            this.cbNegotiate.Name = "cbNegotiate";
+            this.cbNegotiate.Size = new System.Drawing.Size(72, 17);
+            this.cbNegotiate.TabIndex = 17;
+            this.cbNegotiate.Text = "Negotiate";
+            this.cbNegotiate.UseVisualStyleBackColor = true;
+            // 
+            // cbSimpleBind
+            // 
+            this.cbSimpleBind.AutoSize = true;
+            this.cbSimpleBind.Location = new System.Drawing.Point(774, 45);
+            this.cbSimpleBind.Name = "cbSimpleBind";
+            this.cbSimpleBind.Size = new System.Drawing.Size(81, 17);
+            this.cbSimpleBind.TabIndex = 18;
+            this.cbSimpleBind.Text = "Simple Bind";
+            this.cbSimpleBind.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AcceptButton = this.buttonAuthenticate;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(979, 510);
+            this.Controls.Add(this.cbSimpleBind);
+            this.Controls.Add(this.cbNegotiate);
+            this.Controls.Add(this.cbSsl);
+            this.Controls.Add(this.cbWithProperties);
             this.Controls.Add(this.buttonGetUsers);
             this.Controls.Add(this.listBoxUsers);
             this.Controls.Add(this.label6);
@@ -264,6 +312,10 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button buttonGetUsers;
         private System.Windows.Forms.ListBox listBoxUsers;
+        private System.Windows.Forms.CheckBox cbWithProperties;
+        private System.Windows.Forms.CheckBox cbSimpleBind;
+        private System.Windows.Forms.CheckBox cbNegotiate;
+        private System.Windows.Forms.CheckBox cbSsl;
     }
 }
 

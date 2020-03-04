@@ -27,14 +27,21 @@ namespace AdTest
             string container = textBoxAdContainer.Text.Trim();
 
             if (domain.Length == 0)
-            {
                 domain = null;
-            }
 
             if (container.Length == 0)
-            {
                 container = null;
-            }
+
+            ContextOptions? options = null;
+            if (cbSsl.Checked)
+                options = ContextOptions.SecureSocketLayer;
+
+            if (cbSimpleBind.Checked)
+                options = options == null ? ContextOptions.SimpleBind : options | ContextOptions.SimpleBind;
+
+            if (cbNegotiate.Checked)
+                options = options == null ? ContextOptions.Negotiate : options | ContextOptions.Negotiate;
+
 
             buttonAuthenticate.Enabled = false;
             labelStatus.Text = "Authenticating...";
@@ -43,7 +50,7 @@ namespace AdTest
             {
                 // validate the credentials
                 var auth = new ActiveDirectoryAuthenticator();
-                UserDetail authenticatedUser = await auth.Authenticate(username, password, domain, container);
+                UserDetail authenticatedUser = await auth.Authenticate(username, password, domain, container, cbWithProperties.Checked, options);
 
                 bool valid = authenticatedUser != null;
                 string validText = valid ? "User credentials are valid" : "User credentials are not valid";
@@ -64,11 +71,11 @@ namespace AdTest
                     textBoxOutput.AppendText($"EmailAddress: {authenticatedUser.Email}{Environment.NewLine}");
                     textBoxOutput.AppendText($"AccountName: {authenticatedUser.AccountName}{Environment.NewLine}");
                     textBoxOutput.AppendText($"BadLogonCount: {authenticatedUser.BadLogonCount}{Environment.NewLine}");
-                    textBoxOutput.AppendText($"Properties...{Environment.NewLine}{Environment.NewLine}");
 
                     if (authenticatedUser.Properties != null)
                     {
-                        foreach(KeyValuePair<string, string> kv in authenticatedUser.Properties)
+                        textBoxOutput.AppendText($"{Environment.NewLine}Properties...{Environment.NewLine}{Environment.NewLine}");
+                        foreach (KeyValuePair<string, string> kv in authenticatedUser.Properties)
                         {
                             textBoxOutput.AppendText($"{kv.Key}: {kv.Value}{Environment.NewLine}");
                         }

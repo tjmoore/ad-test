@@ -115,9 +115,10 @@ namespace AdTest
         /// <param name="password">password</param>
         /// <param name="domain">optional domain</param>
         /// <param name="container">optional container string</param>
+        /// <param name="withProperties">if true, adds additional properties</param>
         /// <returns>Authenticated user details or null if not authenticated</returns>
         /// <exception cref="UnableToAuthenticateException">Thrown if there is an error authenticating</exception>
-        public Task<UserDetail> Authenticate(string username, string password, string domain = null, string container = null)
+        public Task<UserDetail> Authenticate(string username, string password, string domain = null, string container = null, bool withProperties = false, ContextOptions? options = null)
         {
             return Task.Run(() =>
             {
@@ -125,8 +126,13 @@ namespace AdTest
                 {
                     using (PrincipalContext context = new PrincipalContext(ContextType.Domain, domain, container))
                     {
-                        // validate the credentials
-                        bool isValid = context.ValidateCredentials(username, password);
+                        // validate the credentials. Uses either method to allow specifying options and default without.
+                        bool isValid;
+                        if (options.HasValue)
+                            isValid = context.ValidateCredentials(username, password, options.Value);
+                        else
+                            isValid = context.ValidateCredentials(username, password);
+
                         if (isValid == false)
                             return null;
 
@@ -159,7 +165,7 @@ namespace AdTest
                             };
 
                             // Populate underlying properties
-                            if (foundUser.GetUnderlyingObject() is DirectoryEntry de && de.Properties.Count > 0)
+                            if (withProperties && foundUser.GetUnderlyingObject() is DirectoryEntry de && de.Properties.Count > 0)
                             {
                                 authenticatedUser.Properties = new Dictionary<string, string>();
                                 IDictionaryEnumerator ide = de.Properties.GetEnumerator();
