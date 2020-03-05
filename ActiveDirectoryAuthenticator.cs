@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Linq;
 using System.Collections;
+using System.DirectoryServices.ActiveDirectory;
 
 namespace AdTest
 {
@@ -76,6 +77,11 @@ namespace AdTest
         /// Full property list, as string keys and values
         /// </summary>
         public IDictionary<string, string> Properties { get; set; }
+
+        /// <summary>
+        /// Domain controller details were fetched from if known
+        /// </summary>
+        public string DomainController { get; set; }
     }
 
     public class User
@@ -107,6 +113,21 @@ namespace AdTest
     public class ActiveDirectoryAuthenticator
     {
         private const uint E_USERNAME_OR_PASSWORD_INVALID = 0x8007052E;
+
+        public string GetDomainController(string username, string password, string domain = null)
+        {
+            try
+            {
+                var domainContext = new DirectoryContext(DirectoryContextType.Domain, domain, username, password);
+                var domainInfo = Domain.GetDomain(domainContext);
+                var controller = domainInfo.FindDomainController();
+                return controller.Name;
+            }
+            catch(Exception)
+            {
+                return null;
+            }
+        }
 
         /// <summary>
         /// Authenticate user by username and password
@@ -161,7 +182,8 @@ namespace AdTest
                                 Description = foundUser.Description,
                                 AccountName = foundUser.SamAccountName,
                                 DistinguishedName = foundUser.DistinguishedName,
-                                BadLogonCount = foundUser.BadLogonCount
+                                BadLogonCount = foundUser.BadLogonCount,
+                                DomainController = context.ConnectedServer
                             };
 
                             // Populate underlying properties

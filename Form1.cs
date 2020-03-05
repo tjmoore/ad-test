@@ -50,16 +50,42 @@ namespace AdTest
             {
                 // validate the credentials
                 var auth = new ActiveDirectoryAuthenticator();
+
+                // Check DC first if domain specified
+                string server = null;
+                if (string.IsNullOrEmpty(domain) == false)
+                {
+                    server = auth.GetDomainController(username, password, domain);
+                    if (string.IsNullOrEmpty(server) == false)
+                    {
+                        textBoxOutput.AppendText($"Domain Controller: {server}{Environment.NewLine}");
+                    }
+                }
+
                 UserDetail authenticatedUser = await auth.Authenticate(username, password, domain, container, cbWithProperties.Checked, options);
 
                 bool valid = authenticatedUser != null;
-                string validText = valid ? "User credentials are valid" : "User credentials are not valid";
+
+                if (valid == false && string.IsNullOrEmpty(server) == false)
+                {
+                    // Retry, specifying server as domain
+                    authenticatedUser = await auth.Authenticate(username, password, server, container, cbWithProperties.Checked, options);
+                    valid = authenticatedUser != null;
+                }
+
+                string validText = valid ? "User credentials are valid" : "User credentials are not valid or failed to validate";
                 pictureBoxStatus.Image = valid ? imageList.Images[1] : imageList.Images[2];
                 textBoxOutput.AppendText($"{validText}");
 
                 if (valid)
                 {
                     textBoxOutput.AppendText($"{Environment.NewLine}{Environment.NewLine}");
+                    if (string.IsNullOrEmpty(authenticatedUser.DomainController) == false)
+                    {
+                        textBoxOutput.AppendText($"Domain Controller from validated context: {authenticatedUser.DomainController}{Environment.NewLine}");
+                    }
+
+                    textBoxOutput.AppendText($"{Environment.NewLine}");
                     textBoxOutput.AppendText($"Id: {authenticatedUser.Id}{Environment.NewLine}");
                     textBoxOutput.AppendText($"Username: {authenticatedUser.Username}{Environment.NewLine}");
                     textBoxOutput.AppendText($"Name: {authenticatedUser.Name}{Environment.NewLine}");
