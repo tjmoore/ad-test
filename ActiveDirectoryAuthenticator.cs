@@ -114,19 +114,22 @@ namespace AdTest
     {
         private const uint E_USERNAME_OR_PASSWORD_INVALID = 0x8007052E;
 
-        public string GetDomainController(string username, string password, string domain = null)
+        public async Task<string> GetDomainController(string username, string password, string domain = null)
         {
-            try
+            return await Task.Run(() =>
             {
-                var domainContext = new DirectoryContext(DirectoryContextType.Domain, domain, username, password);
-                var domainInfo = Domain.GetDomain(domainContext);
-                var controller = domainInfo.FindDomainController();
-                return controller.Name;
-            }
-            catch(Exception)
-            {
-                return null;
-            }
+                try
+                {
+                    var domainContext = new DirectoryContext(DirectoryContextType.Domain, domain, username, password);
+                    var domainInfo = Domain.GetDomain(domainContext);
+                    var controller = domainInfo.FindDomainController();
+                    return controller.Name;
+                }
+                catch (Exception)
+                {
+                    return null;
+                }
+            }).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -139,9 +142,9 @@ namespace AdTest
         /// <param name="withProperties">if true, adds additional properties</param>
         /// <returns>Authenticated user details or null if not authenticated</returns>
         /// <exception cref="UnableToAuthenticateException">Thrown if there is an error authenticating</exception>
-        public Task<UserDetail> Authenticate(string username, string password, string domain = null, string container = null, bool withProperties = false, ContextOptions? options = null)
+        public async Task<UserDetail> Authenticate(string username, string password, string domain = null, string container = null, bool withProperties = false, ContextOptions? options = null)
         {
-            return Task.Run(() =>
+            return await Task.Run(() =>
             {
                 try
                 {
@@ -228,7 +231,7 @@ namespace AdTest
                 }
 
                 return null;
-            });
+            }).ConfigureAwait(false);
         }
 
         public Task<List<User>> GetUsers(string domain = null, string container = null)

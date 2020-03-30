@@ -52,8 +52,10 @@
             this.cbSsl = new System.Windows.Forms.CheckBox();
             this.cbNegotiate = new System.Windows.Forms.CheckBox();
             this.cbSimpleBind = new System.Windows.Forms.CheckBox();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxStatus)).BeginInit();
+            this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // textBoxUsername
@@ -94,7 +96,6 @@
             // 
             // buttonAuthenticate
             // 
-            this.buttonAuthenticate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonAuthenticate.Location = new System.Drawing.Point(545, 16);
             this.buttonAuthenticate.Name = "buttonAuthenticate";
             this.buttonAuthenticate.Size = new System.Drawing.Size(93, 23);
@@ -105,15 +106,16 @@
             // 
             // textBoxOutput
             // 
-            this.textBoxOutput.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
+            this.textBoxOutput.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxOutput.BackColor = System.Drawing.SystemColors.Window;
-            this.textBoxOutput.Location = new System.Drawing.Point(13, 149);
+            this.textBoxOutput.Location = new System.Drawing.Point(3, 3);
             this.textBoxOutput.Multiline = true;
             this.textBoxOutput.Name = "textBoxOutput";
             this.textBoxOutput.ReadOnly = true;
             this.textBoxOutput.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBoxOutput.Size = new System.Drawing.Size(443, 349);
+            this.textBoxOutput.Size = new System.Drawing.Size(445, 343);
             this.textBoxOutput.TabIndex = 5;
             // 
             // label3
@@ -201,14 +203,15 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.listBoxUsers.FormattingEnabled = true;
-            this.listBoxUsers.Location = new System.Drawing.Point(468, 149);
+            this.listBoxUsers.Location = new System.Drawing.Point(454, 3);
             this.listBoxUsers.Name = "listBoxUsers";
-            this.listBoxUsers.Size = new System.Drawing.Size(500, 342);
+            this.listBoxUsers.Size = new System.Drawing.Size(445, 342);
             this.listBoxUsers.TabIndex = 13;
             // 
             // buttonGetUsers
             // 
-            this.buttonGetUsers.Location = new System.Drawing.Point(875, 120);
+            this.buttonGetUsers.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonGetUsers.Location = new System.Drawing.Point(822, 120);
             this.buttonGetUsers.Name = "buttonGetUsers";
             this.buttonGetUsers.Size = new System.Drawing.Size(92, 23);
             this.buttonGetUsers.TabIndex = 14;
@@ -219,17 +222,17 @@
             // cbWithProperties
             // 
             this.cbWithProperties.AutoSize = true;
-            this.cbWithProperties.Location = new System.Drawing.Point(644, 20);
+            this.cbWithProperties.Location = new System.Drawing.Point(545, 56);
             this.cbWithProperties.Name = "cbWithProperties";
-            this.cbWithProperties.Size = new System.Drawing.Size(97, 17);
+            this.cbWithProperties.Size = new System.Drawing.Size(193, 17);
             this.cbWithProperties.TabIndex = 15;
-            this.cbWithProperties.Text = "With properties";
+            this.cbWithProperties.Text = "Include full user properties in output";
             this.cbWithProperties.UseVisualStyleBackColor = true;
             // 
             // cbSsl
             // 
             this.cbSsl.AutoSize = true;
-            this.cbSsl.Location = new System.Drawing.Point(644, 45);
+            this.cbSsl.Location = new System.Drawing.Point(644, 20);
             this.cbSsl.Name = "cbSsl";
             this.cbSsl.Size = new System.Drawing.Size(46, 17);
             this.cbSsl.TabIndex = 16;
@@ -239,7 +242,7 @@
             // cbNegotiate
             // 
             this.cbNegotiate.AutoSize = true;
-            this.cbNegotiate.Location = new System.Drawing.Point(696, 45);
+            this.cbNegotiate.Location = new System.Drawing.Point(696, 20);
             this.cbNegotiate.Name = "cbNegotiate";
             this.cbNegotiate.Size = new System.Drawing.Size(72, 17);
             this.cbNegotiate.TabIndex = 17;
@@ -249,25 +252,44 @@
             // cbSimpleBind
             // 
             this.cbSimpleBind.AutoSize = true;
-            this.cbSimpleBind.Location = new System.Drawing.Point(774, 45);
+            this.cbSimpleBind.Location = new System.Drawing.Point(774, 20);
             this.cbSimpleBind.Name = "cbSimpleBind";
             this.cbSimpleBind.Size = new System.Drawing.Size(81, 17);
             this.cbSimpleBind.TabIndex = 18;
             this.cbSimpleBind.Text = "Simple Bind";
             this.cbSimpleBind.UseVisualStyleBackColor = true;
             // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.tableLayoutPanel1.ColumnCount = 2;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.Controls.Add(this.textBoxOutput, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.listBoxUsers, 1, 0);
+            this.tableLayoutPanel1.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.FixedSize;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(13, 149);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 1;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(902, 349);
+            this.tableLayoutPanel1.TabIndex = 19;
+            // 
             // Form1
             // 
             this.AcceptButton = this.buttonAuthenticate;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(979, 510);
+            this.ClientSize = new System.Drawing.Size(926, 510);
+            this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.cbSimpleBind);
             this.Controls.Add(this.cbNegotiate);
             this.Controls.Add(this.cbSsl);
             this.Controls.Add(this.cbWithProperties);
             this.Controls.Add(this.buttonGetUsers);
-            this.Controls.Add(this.listBoxUsers);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.textBoxAdContainer);
@@ -276,7 +298,6 @@
             this.Controls.Add(this.pictureBoxStatus);
             this.Controls.Add(this.textBoxAdDomain);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.textBoxOutput);
             this.Controls.Add(this.buttonAuthenticate);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.textBoxPassword);
@@ -287,6 +308,8 @@
             this.Text = "Active Directory Test";
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxStatus)).EndInit();
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -316,6 +339,7 @@
         private System.Windows.Forms.CheckBox cbSimpleBind;
         private System.Windows.Forms.CheckBox cbNegotiate;
         private System.Windows.Forms.CheckBox cbSsl;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
     }
 }
 

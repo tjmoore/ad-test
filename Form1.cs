@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.DirectoryServices.AccountManagement;
 using System.Linq;
 using System.Net.Mail;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace AdTest
@@ -46,76 +47,83 @@ namespace AdTest
             buttonAuthenticate.Enabled = false;
             labelStatus.Text = "Authenticating...";
 
-            try
+            UserDetail authenticatedUser = null;
+            var auth = new ActiveDirectoryAuthenticator();
+            authenticatedUser = await AuthenticateUser(username, password, domain, container, options, authenticatedUser, auth);
+
+            bool valid = authenticatedUser != null;
+
+            if (valid == false && string.IsNullOrEmpty(domain) == false)
             {
-                // validate the credentials
-                var auth = new ActiveDirectoryAuthenticator();
+                // Get DC based on domain if specified
+                textBoxOutput.AppendText($"Failed to validate.{Environment.NewLine}Retrying by resolving Domain Controller for domain: {domain}...{Environment.NewLine}");
+                string server = await auth.GetDomainController(username, password, domain);
 
-                // Check DC first if domain specified
-                string server = null;
-                if (string.IsNullOrEmpty(domain) == false)
-                {
-                    server = auth.GetDomainController(username, password, domain);
-                    if (string.IsNullOrEmpty(server) == false)
-                    {
-                        textBoxOutput.AppendText($"Domain Controller: {server}{Environment.NewLine}");
-                    }
-                }
+                if (string.IsNullOrEmpty(server) == false)
+                {                    
+                    textBoxOutput.AppendText($"Domain Controller server: {server}{Environment.NewLine}");
 
-                UserDetail authenticatedUser = await auth.Authenticate(username, password, domain, container, cbWithProperties.Checked, options);
-
-                bool valid = authenticatedUser != null;
-
-                if (valid == false && string.IsNullOrEmpty(server) == false)
-                {
                     // Retry, specifying server as domain
-                    authenticatedUser = await auth.Authenticate(username, password, server, container, cbWithProperties.Checked, options);
+                    authenticatedUser = await AuthenticateUser(username, password, server, container, options, authenticatedUser, auth);
                     valid = authenticatedUser != null;
                 }
-
-                string validText = valid ? "User credentials are valid" : "User credentials are not valid or failed to validate";
-                pictureBoxStatus.Image = valid ? imageList.Images[1] : imageList.Images[2];
-                textBoxOutput.AppendText($"{validText}");
-
-                if (valid)
+                else
                 {
-                    textBoxOutput.AppendText($"{Environment.NewLine}{Environment.NewLine}");
-                    if (string.IsNullOrEmpty(authenticatedUser.DomainController) == false)
-                    {
-                        textBoxOutput.AppendText($"Domain Controller from validated context: {authenticatedUser.DomainController}{Environment.NewLine}");
-                    }
-
-                    textBoxOutput.AppendText($"{Environment.NewLine}");
-                    textBoxOutput.AppendText($"Id: {authenticatedUser.Id}{Environment.NewLine}");
-                    textBoxOutput.AppendText($"Username: {authenticatedUser.Username}{Environment.NewLine}");
-                    textBoxOutput.AppendText($"Name: {authenticatedUser.Name}{Environment.NewLine}");
-                    textBoxOutput.AppendText($"GivenName: {authenticatedUser.GivenName}{Environment.NewLine}");
-                    textBoxOutput.AppendText($"MiddleName: {authenticatedUser.MiddleName}{Environment.NewLine}");
-                    textBoxOutput.AppendText($"Surname: {authenticatedUser.Surname}{Environment.NewLine}");
-                    textBoxOutput.AppendText($"FullName: {authenticatedUser.FullName}{Environment.NewLine}");
-                    textBoxOutput.AppendText($"DistinguishedName: {authenticatedUser.DistinguishedName}{Environment.NewLine}");
-                    textBoxOutput.AppendText($"EmailAddress: {authenticatedUser.Email}{Environment.NewLine}");
-                    textBoxOutput.AppendText($"AccountName: {authenticatedUser.AccountName}{Environment.NewLine}");
-                    textBoxOutput.AppendText($"BadLogonCount: {authenticatedUser.BadLogonCount}{Environment.NewLine}");
-
-                    if (authenticatedUser.Properties != null)
-                    {
-                        textBoxOutput.AppendText($"{Environment.NewLine}Properties...{Environment.NewLine}{Environment.NewLine}");
-                        foreach (KeyValuePair<string, string> kv in authenticatedUser.Properties)
-                        {
-                            textBoxOutput.AppendText($"{kv.Key}: {kv.Value}{Environment.NewLine}");
-                        }
-                    }
-                }                
+                    textBoxOutput.AppendText($"Unable to resolve Domain Controller{Environment.NewLine}");
+                }
             }
-            catch (UnableToAuthenticateException ex)
+
+            string validText = valid ? "User credentials are valid" : "User credentials are not valid or failed to validate";
+            pictureBoxStatus.Image = valid ? imageList.Images[1] : imageList.Images[2];
+            textBoxOutput.AppendText($"{Environment.NewLine}{validText}");
+
+            if (valid)
             {
-                textBoxOutput.AppendText($"{ex.Message} (username: {textBoxUsername.Text}, domain: {domain})");
-                pictureBoxStatus.Image = imageList.Images[0];
+                textBoxOutput.AppendText($"{Environment.NewLine}{Environment.NewLine}");
+                if (string.IsNullOrEmpty(authenticatedUser.DomainController) == false)
+                {
+                    textBoxOutput.AppendText($"Domain Controller from validated context: {authenticatedUser.DomainController}{Environment.NewLine}");
+                }
+
+                textBoxOutput.AppendText($"{Environment.NewLine}");
+                textBoxOutput.AppendText($"Id: {authenticatedUser.Id}{Environment.NewLine}");
+                textBoxOutput.AppendText($"Username: {authenticatedUser.Username}{Environment.NewLine}");
+                textBoxOutput.AppendText($"Name: {authenticatedUser.Name}{Environment.NewLine}");
+                textBoxOutput.AppendText($"GivenName: {authenticatedUser.GivenName}{Environment.NewLine}");
+                textBoxOutput.AppendText($"MiddleName: {authenticatedUser.MiddleName}{Environment.NewLine}");
+                textBoxOutput.AppendText($"Surname: {authenticatedUser.Surname}{Environment.NewLine}");
+                textBoxOutput.AppendText($"FullName: {authenticatedUser.FullName}{Environment.NewLine}");
+                textBoxOutput.AppendText($"DistinguishedName: {authenticatedUser.DistinguishedName}{Environment.NewLine}");
+                textBoxOutput.AppendText($"EmailAddress: {authenticatedUser.Email}{Environment.NewLine}");
+                textBoxOutput.AppendText($"AccountName: {authenticatedUser.AccountName}{Environment.NewLine}");
+                textBoxOutput.AppendText($"BadLogonCount: {authenticatedUser.BadLogonCount}{Environment.NewLine}");
+
+                if (authenticatedUser.Properties != null)
+                {
+                    textBoxOutput.AppendText($"{Environment.NewLine}Properties...{Environment.NewLine}{Environment.NewLine}");
+                    foreach (KeyValuePair<string, string> kv in authenticatedUser.Properties)
+                    {
+                        textBoxOutput.AppendText($"{kv.Key}: {kv.Value}{Environment.NewLine}");
+                    }
+                }
             }
 
             labelStatus.Text = "";
             buttonAuthenticate.Enabled = true;
+        }
+
+        private async Task<UserDetail> AuthenticateUser(string username, string password, string domain, string container, ContextOptions? options, UserDetail authenticatedUser, ActiveDirectoryAuthenticator auth)
+        {
+            try
+            {
+                // validate the credentials
+                return await auth.Authenticate(username, password, domain, container, cbWithProperties.Checked, options);
+            }
+            catch (UnableToAuthenticateException ex)
+            {
+                textBoxOutput.AppendText($"{ex.Message} (username: {textBoxUsername.Text}, domain: {domain}){Environment.NewLine}");
+                return null;
+            }
         }
 
         private void EnableButtons()
